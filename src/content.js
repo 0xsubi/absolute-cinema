@@ -425,8 +425,17 @@
     const rows = [];
     const hz = refreshHz > 0 ? refreshHz : null;
 
+    /* Shown even when idle: if the cap reads 0 here, the setting never
+       reached the content script and the popup is the thing to look at. */
+    const loaded =
+      `${settings.quality} · ` +
+      `${settings.fpsCap ? settings.fpsCap + 'fps' : 'no cap'} · ` +
+      `${settings.fpsMode}`;
+
     if (!r) {
-      rows.push(['status', cinema.running ? 'warming up…' : 'idle']);
+      rows.push(['status', cinema.running ? 'warming up…' : decision]);
+      rows.push(['settings', loaded, !settings.fpsCap]);
+      rows.push(['source', label() || '—']);
       rows.push(['display', hz ? hz + ' Hz' : 'measuring…']);
       return rows;
     }
@@ -485,6 +494,7 @@
   let playerObserver = null;
   let probe = { key: null, fps: null, busy: false };
   let briefLabel = '';
+  let decision = 'starting up'; // why the engine is or isn't running
 
   const briefText = () => briefLabel;
 
@@ -519,11 +529,13 @@
     const video = currentVideo;
     const player = currentPlayer;
     if (!video || !player) {
+      decision = 'no YouTube player on this page';
       cinema.stop();
       return;
     }
 
     if (!settings.enabled) {
+      decision = 'switched off in settings';
       cinema.stop();
       briefLabel = '';
       refreshHud();
@@ -539,6 +551,13 @@
     const inPip = document.pictureInPictureElement === video;
 
     if (!wantCinema || adShowing || inPip) {
+      decision = adShowing
+        ? 'ad playing — left alone'
+        : inPip
+        ? 'picture-in-picture — left alone'
+        : settings.fpsMode === 'stream'
+        ? 'stream mode — no canvas needed'
+        : 'frame rate cap is off';
       cinema.stop();
       briefLabel =
         adShowing || inPip
@@ -552,10 +571,12 @@
 
     const src = sourceFps(video);
     if (src == null) {
-      cinema.stop(); // frame rate still unknown; try again when the probe lands
+      decision = 'source frame rate unknown — still probing';
+      cinema.stop(); // try again when the probe lands
       return;
     }
     if (src <= settings.fpsCap) {
+      decision = `source is ${src}fps, already at or under the cap`;
       cinema.stop();
       briefLabel = `${label() || src + 'fps'} · already ≤ ${settings.fpsCap}fps`;
       refreshHud();
@@ -563,6 +584,7 @@
     }
 
     cinema.start(video, player, settings.fpsCap);
+    decision = 'running';
     briefLabel = `${label() || src + 'fps'} → ${settings.fpsCap}fps`;
     refreshHud();
   }

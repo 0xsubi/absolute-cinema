@@ -215,9 +215,12 @@ halves talk over `window.postMessage`.
 ## Tests
 
 ```
-node test/run.mjs
+node test/all.mjs
 ```
 
-Covers quality-ceiling behaviour, the fallback ladder, the stream-mode fps
-filter, and the cadence gate — including a regression test that pins the
-rAF-vs-rVFC pacing difference at 120Hz.
+| Suite | Covers |
+| --- | --- |
+| `run.mjs` | Quality ceiling, fallback ladder, stream-mode fps filter, and the cadence gate — including a regression test pinning the rAF-vs-rVFC pacing difference at 120Hz. |
+| `engine.mjs` | The real `content.js` loaded into a stubbed DOM with a fake 60fps player and a manual rAF clock. Asserts the canvas is inserted, the source video gets hidden, and repaints land on an even grid at the target rate. |
+| `ui.mjs` | The contract between `ui.html`, `ui.js` and the engine: every id and radio group `ui.js` reads exists, `DEFAULTS` matches on both sides, and every input is label-wrapped so the NeoPOP faces stay clickable. |
+| `assets.mjs` | Package integrity — every path the manifest names exists, every `url()` in the injected CSS resolves, and the rule that hides the source video is still present. |

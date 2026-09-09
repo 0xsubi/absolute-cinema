@@ -28,22 +28,23 @@
     saved: $('#saved'),
   };
 
-  /* Firefox needs a gecko id for storage.sync; if anything about it is
-     unavailable we transparently fall back to local. */
-  let area = 'sync';
+  /* Settings are written to BOTH storage areas, deliberately.
+     content.js loads by merging local then sync, letting sync win. If the
+     popup were to write only local — because sync threw, is disabled, or the
+     Firefox gecko id is missing — a stale sync value would beat every save on
+     the next page load: the setting would appear to apply live (onChanged
+     fires) and then silently revert on reload. Writing both keeps the two
+     areas from ever disagreeing. */
 
   async function read() {
     const merged = { ...DEFAULTS };
-    let live = null;
     for (const a of ['local', 'sync']) {
       try {
         const got = await api.storage[a].get(null);
         if (!got) continue;
-        live = a;
         for (const k of Object.keys(DEFAULTS)) if (k in got) merged[k] = got[k];
       } catch {}
     }
-    area = live || 'local';
     return merged;
   }
 
@@ -81,11 +82,13 @@
   async function save() {
     reflect();
     const s = collect();
-    try {
-      await api.storage[area].set(s);
-    } catch {
-      area = 'local';
-      await api.storage.local.set(s);
+    const results = await Promise.allSettled([
+      api.storage.local.set(s),
+      api.storage.sync.set(s),
+    ]);
+    if (results.every((r) => r.status === 'rejected')) {
+      els.saved.textContent = 'Could not save';
+      return;
     }
     els.saved.textContent = 'Saved';
     clearTimeout(flash);
