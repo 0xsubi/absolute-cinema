@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Absolute Cinema</title>
+    <link rel="stylesheet" href="neopop.css" />
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="head">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="head-txt">
+          <h1>Absolute Cinema</h1>
+          <p>YouTube quality &amp; frame rate</p>
+        </div>
+        <label class="np-toggle" title="Enable on YouTube">
+          <input type="checkbox" id="enabled" />
+          <span class="np-toggle-track"></span>
+          <span class="np-toggle-knob"></span>
+        </label>
+      </header>
+
+      <section class="card">
+        <label class="lbl" for="quality">Default quality</label>
+        <div class="np-plunk np-select">
+          <select id="quality" class="np-face">
+            <option value="auto">AUTO</option>
+            <option value="highres">4320p &nbsp;— 8K</option>
+            <option value="hd2160">2160p &nbsp;— 4K</option>
+            <option value="hd1440">1440p</option>
+            <option value="hd1080">1080p</option>
+            <option value="hd720">720p</option>
+            <option value="large">480p</option>
+            <option value="medium">360p</option>
+            <option value="small">240p</option>
+            <option value="tiny">144p</option>
+          </select>
+          <i class="np-edge np-edge-right"></i>
+          <i class="np-edge np-edge-bottom"></i>
+        </div>
+        <p class="hint">
+          Acts as a ceiling. If the video doesn't offer it, the next best
+          available quality is used.
+        </p>
+      </section>
+
+      <section class="card">
+        <span class="lbl">Frame rate cap</span>
+        <div class="seg" role="radiogroup" aria-label="Frame rate cap">
+          <label class="np-plunk np-seg">
+            <input type="radio" name="fps" value="0" />
+            <span class="np-face">Off</span>
+            <i class="np-edge np-edge-right"></i>
+            <i class="np-edge np-edge-bottom"></i>
+          </label>
+          <label class="np-plunk np-seg">
+            <input type="radio" name="fps" value="24" />
+            <span class="np-face">24 fps</span>
+            <i class="np-edge np-edge-right"></i>
+            <i class="np-edge np-edge-bottom"></i>
+          </label>
+          <label class="np-plunk np-seg">
+            <input type="radio" name="fps" value="30" />
+            <span class="np-face">30 fps</span>
+            <i class="np-edge np-edge-right"></i>
+            <i class="np-edge np-edge-bottom"></i>
+          </label>
+        </div>
+        <p class="hint">
+          Videos already at or below the cap are left untouched.
+        </p>
+      </section>
+
+      <section class="card" id="method-card">
+        <span class="lbl">Method</span>
+        <label class="opt">
+          <input type="radio" name="mode" value="cinematic" />
+          <span class="np-check"></span>
+          <span class="opt-body">
+            <b>Cinematic</b>
+            <em
+              >Keeps 4K/8K. Repaints the frame on a 24/30fps cadence over the
+              real video.</em
+            >
+          </span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="mode" value="stream" />
+          <span class="np-check"></span>
+          <span class="opt-body">
+            <b>Lower-fps stream</b>
+            <em
+              >Picks a genuinely low-fps stream. Real decode savings, much lower
+              resolution.</em
+            >
+          </span>
+        </label>
+        <p class="warn" id="warn" hidden>
+          YouTube only encodes 60fps uploads at 60fps above 720p — capping the
+          stream will drop such videos to roughly <b>480p</b>. No 24fps stream
+          exists, so 24 lands on the lowest available rate.
+        </p>
+      </section>
+
+      <section class="card">
+        <label class="opt opt-inline">
+          <input type="checkbox" id="badge" />
+          <span class="np-check"></span>
+          <span>Show a status badge in the player</span>
+        </label>
+        <label class="opt opt-inline">
+          <input type="checkbox" id="diag" />
+          <span class="np-check"></span>
+          <span>Show cadence diagnostics</span>
+        </label>
+        <p class="hint">
+          Diagnostics replace the badge with a live readout: measured cadence,
+          timing jitter against the best your display can do, how long each
+          repaint takes, and the decoder's dropped-frame count.
+        </p>
+      </section>
+
+      <footer class="foot"><span id="saved">Saves automatically</span></footer>
+    </main>
+    <script src="ui.js"></script>
+  </body>
+</html>

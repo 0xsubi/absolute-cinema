@@ -1,0 +1,89 @@
+/* In-player overlay — canvas, status badge and diagnostics HUD.
+   NeoPOP tokens come from neopop.css, injected alongside this file. */
+
+/* The source video keeps decoding and keeps its audio; we just stop showing it
+   and let the canvas present a slower cadence in its place. */
+.html5-video-player.ac-cinema-on video.html5-main-video {
+  opacity: 0 !important;
+}
+
+canvas.ac-canvas {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  background: #000;
+}
+
+/* ------------------------------------------------------------------- badge */
+
+.ac-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 60;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  background: var(--ac-black, #0d0d0d);
+  border: 1px solid var(--ac-white, #fff);
+  box-shadow: var(--ac-plunk, 3px) var(--ac-plunk, 3px) 0
+    var(--ac-black-70, #3d3d3d);
+  color: var(--ac-font-heading, rgba(255, 255, 255, 0.9));
+  font-family: var(--ac-mono), 'Overpass Mono AC', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.ac-badge.ac-badge-show {
+  opacity: 1;
+}
+
+.ac-badge b {
+  font-family: var(--ac-font), 'Space Grotesk AC', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ac-black, #0d0d0d);
+  background: var(--ac-accent, #ea333e);
+  padding: 3px 5px 2px;
+}
+
+/* --------------------------------------------------------------- diagnostics */
+
+.ac-badge.ac-hud {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5px 16px;
+  padding: 11px 13px;
+  box-shadow: var(--ac-plunk, 3px) var(--ac-plunk, 3px) 0
+    var(--ac-accent-800, #4d3d15);
+}
+
+.ac-hud .ac-k {
+  font-family: var(--ac-font), 'Space Grotesk AC', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ac-font-body, rgba(255, 255, 255, 0.5));
+  align-self: center;
+}
+
+.ac-hud .ac-v {
+  font-family: var(--ac-mono), 'Overpass Mono AC', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ac-white, #fff);
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-hud .ac-warn {
+  color: var(--ac-warning, #f08d32);
+}

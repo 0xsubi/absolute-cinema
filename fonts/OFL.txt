@@ -1,0 +1,8 @@
+Space Grotesk  — Copyright (c) 2020 Florian Karsten
+Overpass Mono  — Copyright (c) 2016 Red Hat, Inc.
+
+Both fonts are licensed under the SIL Open Font License, Version 1.1.
+Full licence text: https://openfontlicense.org/
+
+The .woff2 files here are the latin subsets served by Google Fonts, bundled
+so the extension makes no network request when its UI opens.

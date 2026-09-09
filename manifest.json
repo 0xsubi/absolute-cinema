@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "Absolute Cinema",
+  "version": "1.0.0",
+  "description": "Pin YouTube to a default video quality, and cap 60fps videos to 24 or 30fps.",
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Absolute Cinema",
+    "default_popup": "src/ui.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/ui.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://m.youtube.com/*",
+        "*://www.youtube-nocookie.com/*"
+      ],
+      "js": [
+        "src/content.js"
+      ],
+      "css": [
+        "src/neopop.css",
+        "src/overlay.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/inject.js",
+        "fonts/space-grotesk.woff2",
+        "fonts/overpass-mono.woff2"
+      ],
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://*.youtube-nocookie.com/*"
+      ]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "absolute-cinema@0xsubi",
+      "strict_min_version": "115.0"
+    }
+  }
+}

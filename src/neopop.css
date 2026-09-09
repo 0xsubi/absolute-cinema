@@ -1,0 +1,153 @@
+/*
+ * NeoPOP design tokens and primitives.
+ *
+ * Ported by hand from CRED's neopop-web (https://github.com/CRED-CLUB/neopop-web)
+ * rather than imported: that package is a React + styled-components library
+ * with no CSS export, and pulling React, styled-components, react-spring and a
+ * bundler into a four-control settings popup is not a trade worth making.
+ *
+ * Values below are taken verbatim from the library source:
+ *   src/primitives/index.ts   PlunkProps.WIDTH = 3, PlunkProps.ANGLE = 45
+ *   src/primitives/colors.ts  colorPalette, mainColors, getDarkThemedColors()
+ *   src/primitives/opacity.ts FontOpacity
+ *   src/components/Button/styles.ts  the skewed-edge elevation geometry
+ */
+
+@font-face {
+  font-family: 'Space Grotesk AC';
+  src: url('../fonts/space-grotesk.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Overpass Mono AC';
+  src: url('../fonts/overpass-mono.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* mainColors + colorPalette.popBlack / black */
+  --ac-black: #0d0d0d;
+  --ac-black-90: #161616;
+  --ac-black-100: #121212;
+  --ac-black-70: #3d3d3d;
+  --ac-black-50: #8a8a8a;
+  --ac-white: #ffffff;
+  --ac-white-50: #e0e0e0;
+
+  /* colorGuide.darkComponents.containerCard */
+  --ac-card: #121212;
+  --ac-stroke: rgba(255, 255, 255, 0.1);
+
+  /* FontOpacity */
+  --ac-font-heading: rgba(255, 255, 255, 0.9);
+  --ac-font-subheading: rgba(255, 255, 255, 0.7);
+  --ac-font-body: rgba(255, 255, 255, 0.5);
+  --ac-font-lighter: rgba(255, 255, 255, 0.3);
+
+  /* Accent. Not a stock palette entry, but the 600/800 steps are derived with
+     NeoPOP's own ramp (x0.70 / x0.30 off the 500), so the plunk edges shade
+     exactly like every built-in hue does. */
+  --ac-accent: #ea333e;
+  --ac-accent-600: #a4242b;
+  --ac-accent-800: #460f13;
+
+  /* colorGuide.darkComponents.buttons.primary.edgeColors */
+  --ac-edge-bottom: #3d3d3d;
+  --ac-edge-right: #8a8a8a;
+
+  --ac-warning: #f08d32;
+  --ac-error: #ee4d37;
+
+  /* PlunkProps */
+  --ac-plunk: 3px;
+  --ac-angle: 45deg;
+
+  --ac-font: 'Space Grotesk AC', 'Space Grotesk', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ac-mono: 'Overpass Mono AC', 'Overpass Mono', ui-monospace, SFMono-Regular,
+    Menlo, Consolas, monospace;
+}
+
+/*
+ * Elevation ("plunk"). A face inset by the plunk width, with two 45°-skewed
+ * strips standing in for the extruded right and bottom sides. Pressing
+ * translates face and edges together by the plunk width, so the solid appears
+ * to sink into the surface.
+ */
+.np-plunk {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.np-plunk .np-face {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 var(--ac-plunk) var(--ac-plunk) 0;
+  background: var(--ac-black);
+  color: var(--ac-font-heading);
+  transition: transform 0.12s ease-in-out, background-color 0.12s ease-in-out,
+    color 0.12s ease-in-out;
+}
+
+.np-plunk .np-edge {
+  position: absolute;
+  z-index: 2;
+  transform-origin: 0 0;
+  transition: transform 0.12s ease-in-out, background-color 0.12s ease-in-out;
+}
+
+.np-plunk .np-edge-right {
+  top: 0;
+  right: 0;
+  width: var(--ac-plunk);
+  height: calc(100% - var(--ac-plunk));
+  background: var(--ac-edge-right);
+  transform: skewY(var(--ac-angle));
+}
+
+.np-plunk .np-edge-bottom {
+  left: 0;
+  bottom: 0;
+  height: var(--ac-plunk);
+  width: calc(100% - var(--ac-plunk));
+  background: var(--ac-edge-bottom);
+  transform: skewX(var(--ac-angle));
+}
+
+/* Pressed, whether by pointer or because the control is selected. */
+.np-plunk:active .np-face,
+.np-plunk.is-down .np-face,
+.np-plunk :checked ~ .np-face {
+  transform: translate3d(var(--ac-plunk), var(--ac-plunk), 0);
+}
+
+.np-plunk:active .np-edge-right,
+.np-plunk.is-down .np-edge-right,
+.np-plunk :checked ~ .np-edge-right {
+  transform: translate3d(var(--ac-plunk), var(--ac-plunk), 0)
+    skewY(var(--ac-angle));
+}
+
+.np-plunk:active .np-edge-bottom,
+.np-plunk.is-down .np-edge-bottom,
+.np-plunk :checked ~ .np-edge-bottom {
+  transform: translate3d(var(--ac-plunk), var(--ac-plunk), 0)
+    skewX(var(--ac-angle));
+}

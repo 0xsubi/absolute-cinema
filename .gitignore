@@ -1,0 +1,35 @@
+# Build output
+dist/
+*.zip
+*.xpi
+*.crx
+*.pem
+
+# web-ext (Firefox packaging / signing)
+web-ext-artifacts/
+.web-extension-id
+
+# Node — not used today, but here if the neopop-web bundle ever lands
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment / secrets (AMO and Chrome Web Store upload credentials)
+.env
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# macOS
+.DS_Store
+._*
+
+# Deliberately NOT ignored, in case it looks odd in a diff:
+#   fonts/*.woff2   bundled on purpose so the UI makes no network request
+#   icons/*.png     generated once by a script that lives outside the repo
+#   preview.html    standalone UI preview; excluded from the zip by build.sh

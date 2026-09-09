@@ -1,0 +1,373 @@
+/* Absolute Cinema settings UI — NeoPOP dark theme.
+   Tokens and plunk primitives come from neopop.css. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ac-black);
+  color: var(--ac-font-heading);
+  font-family: var(--ac-font);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  width: 380px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .wrap {
+    width: 560px;
+    padding: 40px 24px 56px;
+    gap: 16px;
+  }
+}
+
+/* ------------------------------------------------------------------ header */
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 2px 3px 6px 0;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  background: var(--ac-accent);
+  box-shadow: var(--ac-plunk) var(--ac-plunk) 0 var(--ac-accent-800);
+}
+
+.logo::before,
+.logo::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  height: 4px;
+  background-image: radial-gradient(circle, var(--ac-black) 1.6px, transparent 1.7px);
+  background-size: 6px 6px;
+  background-position: center;
+}
+.logo::before { top: 3px; }
+.logo::after { bottom: 3px; }
+
+.head-txt {
+  flex: 1;
+  min-width: 0;
+  padding-left: 3px;
+}
+
+.head h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ac-white);
+}
+
+.head p {
+  margin: 1px 0 0;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ac-font-body);
+}
+
+/* ------------------------------------------------------------------- cards */
+
+.card {
+  background: var(--ac-card);
+  border: 1px solid var(--ac-stroke);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ac-font-body);
+}
+
+.hint {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--ac-font-body);
+}
+
+.warn {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(240, 141, 50, 0.1);
+  border-left: var(--ac-plunk) solid var(--ac-warning);
+  padding: 9px 11px;
+}
+
+.warn b {
+  color: var(--ac-warning);
+  font-family: var(--ac-mono);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------- quality select (plunked) */
+
+.np-select .np-face {
+  display: block;
+  width: calc(100% - var(--ac-plunk));
+  appearance: none;
+  border: 1px solid var(--ac-white);
+  padding: 11px 34px 11px 12px;
+  font-family: var(--ac-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ac-white);
+  background-color: var(--ac-black);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='11' height='7'><path d='M1 1l4.5 4.5L10 1' fill='none' stroke='%23EA333E' stroke-width='1.8' stroke-linecap='square'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+.np-select .np-face option {
+  background: var(--ac-black-90);
+  color: var(--ac-white);
+}
+
+.np-select .np-face:focus-visible {
+  outline: none;
+  border-color: var(--ac-accent);
+  box-shadow: inset 0 0 0 1px var(--ac-accent);
+}
+
+/* ------------------------------------------------ frame-rate segment buttons */
+
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.np-seg input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.np-seg .np-face {
+  border: 1px solid var(--ac-white);
+  padding: 10px 0;
+  font-family: var(--ac-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Selected reads as pressed into the surface, in the accent colour. */
+.np-seg input:checked ~ .np-face {
+  background: var(--ac-accent);
+  border-color: var(--ac-accent);
+  color: var(--ac-black);
+}
+
+.np-seg input:checked ~ .np-edge-right {
+  background: var(--ac-accent-600);
+}
+
+.np-seg input:checked ~ .np-edge-bottom {
+  background: var(--ac-accent-800);
+}
+
+.np-seg input:focus-visible ~ .np-face {
+  box-shadow: inset 0 0 0 2px var(--ac-accent);
+}
+
+.np-seg input:checked:focus-visible ~ .np-face {
+  box-shadow: inset 0 0 0 2px var(--ac-black);
+}
+
+/* -------------------------------------------------- checkboxes and radios */
+
+.opt {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.opt-inline {
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.opt > input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.np-check {
+  position: relative;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+  border: 1px solid var(--ac-white);
+  background: var(--ac-black);
+  box-shadow: 2px 2px 0 var(--ac-black-70);
+  transition: background-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+}
+
+.opt-inline .np-check {
+  margin-top: 0;
+}
+
+.opt > input:checked ~ .np-check {
+  background: var(--ac-accent);
+  border-color: var(--ac-accent);
+  box-shadow: 2px 2px 0 var(--ac-accent-800);
+}
+
+.opt > input:focus-visible ~ .np-check {
+  outline: 2px solid var(--ac-accent);
+  outline-offset: 2px;
+}
+
+/* Tick for checkboxes. */
+.opt > input[type='checkbox']:checked ~ .np-check::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid var(--ac-black);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Filled core for radios. */
+.opt > input[type='radio']:checked ~ .np-check::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--ac-black);
+}
+
+.opt-body b {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ac-font-heading);
+}
+
+.opt-body em {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--ac-font-body);
+}
+
+/* ------------------------------------------------------------ master toggle */
+
+.np-toggle {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 23px;
+  cursor: pointer;
+}
+
+.np-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.np-toggle-track {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--ac-white);
+  background: #0a0a0a;
+  box-shadow: 2px 2px 0 var(--ac-black-70);
+  transition: background-color 0.14s ease-in-out, box-shadow 0.14s ease-in-out;
+  pointer-events: none;
+}
+
+.np-toggle-knob {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 13px;
+  height: 13px;
+  background: var(--ac-white);
+  transition: transform 0.14s ease-in-out, background-color 0.14s ease-in-out;
+  pointer-events: none;
+}
+
+.np-toggle input:checked ~ .np-toggle-track {
+  background: rgba(234, 51, 62, 0.32);
+  box-shadow: 2px 2px 0 var(--ac-accent-800);
+}
+
+.np-toggle input:checked ~ .np-toggle-knob {
+  background: var(--ac-accent);
+  transform: translateX(19px);
+}
+
+.np-toggle input:focus-visible ~ .np-toggle-track {
+  outline: 2px solid var(--ac-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.foot {
+  text-align: center;
+  font-family: var(--ac-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ac-font-lighter);
+  padding-top: 2px;
+}
+
+/* Master switch off: the rest goes quiet but stays reachable. */
+body.is-off .card {
+  opacity: 0.4;
+}
+
+body.is-off .card:focus-within {
+  opacity: 1;
+}
