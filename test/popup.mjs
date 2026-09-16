@@ -96,7 +96,7 @@ function popup(stored) {
 
 const STORED = {
   enabled: true, quality: 'hd1440', fpsCap: 24,
-  fpsMode: 'cinematic', badge: true, diag: false,
+  fpsMode: 'cinematic', badge: true, diag: false, pip: true,
 };
 
 console.log('popup');
@@ -130,7 +130,7 @@ check('selecting Off writes to BOTH storage areas', () => {
 check('a save carries every setting, not just the changed one', () => {
   assert.deepEqual(
     Object.keys(p.writes.sync.at(-1)).sort(),
-    ['badge', 'diag', 'enabled', 'fpsCap', 'fpsMode', 'quality']
+    ['badge', 'diag', 'enabled', 'fpsCap', 'fpsMode', 'pip', 'quality']
   );
 });
 

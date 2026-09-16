@@ -214,7 +214,7 @@ function harness({ settings: initial, sourceFps = 60, refreshHz = 120 }) {
 
 const BASE = {
   enabled: true, quality: 'hd2160', fpsCap: 24,
-  fpsMode: 'cinematic', badge: true, diag: false,
+  fpsMode: 'cinematic', badge: true, diag: false, pip: true,
 };
 
 console.log('cinematic engine');

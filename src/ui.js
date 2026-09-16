@@ -13,6 +13,7 @@
     fpsMode: 'cinematic',
     badge: true,
     diag: false,
+    pip: true,
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -24,6 +25,7 @@
     quality: $('#quality'),
     badge: $('#badge'),
     diag: $('#diag'),
+    pip: $('#pip'),
     warn: $('#warn'),
     saved: $('#saved'),
   };
@@ -53,6 +55,7 @@
     els.quality.value = s.quality;
     els.badge.checked = !!s.badge;
     els.diag.checked = !!s.diag;
+    els.pip.checked = !!s.pip;
     for (const r of radios('fps')) r.checked = Number(r.value) === Number(s.fpsCap);
     for (const r of radios('mode')) r.checked = r.value === s.fpsMode;
     reflect();
@@ -68,6 +71,7 @@
       fpsMode: mode ? mode.value : 'cinematic',
       badge: els.badge.checked,
       diag: els.diag.checked,
+      pip: els.pip.checked,
     };
   }
 

@@ -63,12 +63,13 @@ check('method radios match the modes content.js branches on', () => {
 check('every setting in DEFAULTS has a control in ui.html', () => {
   const block = content.match(/const DEFAULTS = \{([\s\S]*?)\};/)[1];
   const keys = [...block.matchAll(/^\s*(\w+):/gm)].map((m) => m[1]);
-  assert.deepEqual(keys.sort(), ['badge', 'diag', 'enabled', 'fpsCap', 'fpsMode', 'quality']);
+  assert.deepEqual(keys.sort(), ['badge', 'diag', 'enabled', 'fpsCap', 'fpsMode', 'pip', 'quality']);
   for (const [key, control] of [
     ['enabled', () => ids.has('enabled')],
     ['quality', () => ids.has('quality')],
     ['badge', () => ids.has('badge')],
     ['diag', () => ids.has('diag')],
+    ['pip', () => ids.has('pip')],
     ['fpsCap', () => valuesFor('fps').length === 3],
     ['fpsMode', () => valuesFor('mode').length === 2],
   ]) {

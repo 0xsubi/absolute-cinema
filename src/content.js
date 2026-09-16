@@ -29,6 +29,7 @@
     fpsMode: 'cinematic', // 'cinematic' | 'stream'
     badge: true,
     diag: false,
+    pip: true,
   };
 
   const COMMON_FPS = [24, 25, 30, 48, 50, 60, 90, 120];
@@ -487,6 +488,69 @@
     hud.brief(player, briefText());
   }
 
+  // ------------------------------------------------------ picture-in-picture
+
+  const pip = {
+    el: null,
+    video: null,
+
+    mount(player, video) {
+      if (!document.pictureInPictureEnabled || video.disablePictureInPicture) {
+        this.unmount();
+        return;
+      }
+      if (!this.el || this.el.parentElement !== player || this.video !== video) {
+        this.unmount();
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ac-pip-btn';
+        btn.title = 'Picture in picture';
+        btn.setAttribute('aria-label', 'Picture in picture');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.innerHTML =
+          '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">' +
+          '<rect x="3" y="4.5" width="18" height="13" rx="1.5"/>' +
+          '<rect x="12.5" y="11" width="6.5" height="4.5" rx="1" fill="currentColor" stroke="none"/>' +
+          '</svg>';
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.toggle();
+        });
+        // Keep YouTube's own keyboard shortcuts (space, arrows, etc.) from
+        // firing when the button has focus and the player also sees the key.
+        btn.addEventListener('keydown', (e) => e.stopPropagation());
+        player.appendChild(btn);
+        this.el = btn;
+        this.video = video;
+      }
+      this.sync();
+    },
+
+    toggle() {
+      const v = this.video;
+      if (!v) return;
+      if (document.pictureInPictureElement === v) {
+        document.exitPictureInPicture().catch(() => {});
+      } else {
+        v.requestPictureInPicture().catch(() => {});
+      }
+    },
+
+    sync() {
+      if (!this.el) return;
+      const active = document.pictureInPictureElement === this.video;
+      this.el.classList.toggle('is-active', active);
+      this.el.setAttribute('aria-pressed', String(active));
+    },
+
+    unmount() {
+      if (this.el) this.el.remove();
+      this.el = null;
+      this.video = null;
+    },
+  };
+
   // ------------------------------------------------------------ orchestration
 
   let currentVideo = null;
@@ -531,6 +595,7 @@
     if (!video || !player) {
       decision = 'no YouTube player on this page';
       cinema.stop();
+      pip.unmount();
       return;
     }
 
@@ -538,8 +603,15 @@
       decision = 'switched off in settings';
       cinema.stop();
       briefLabel = '';
+      pip.unmount();
       refreshHud();
       return;
+    }
+
+    if (settings.pip) {
+      pip.mount(player, video);
+    } else {
+      pip.unmount();
     }
 
     const wantCinema = settings.fpsMode === 'cinematic' && settings.fpsCap > 0;
@@ -608,6 +680,7 @@
       probe = { key: null, fps: null, busy: false };
       cinema.stop();
       hud.hide();
+      pip.unmount();
 
       if (player) {
         // Ad breaks toggle classes on the player root.
@@ -663,6 +736,7 @@
     postToPage('settings', settings);
     cinema.stop();
     hud.hide();
+    pip.unmount();
     evaluate();
   });
 

@@ -55,6 +55,55 @@ canvas.ac-canvas {
   padding: 3px 5px 2px;
 }
 
+/* -------------------------------------------------------- picture-in-picture */
+
+.ac-pip-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: var(--ac-black, #0d0d0d);
+  border: 1px solid var(--ac-white, #fff);
+  box-shadow: var(--ac-plunk, 3px) var(--ac-plunk, 3px) 0
+    var(--ac-black-70, #3d3d3d);
+  color: var(--ac-white, #fff);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.html5-video-player:hover .ac-pip-btn,
+.ac-pip-btn:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ac-pip-btn svg {
+  display: block;
+}
+
+.ac-pip-btn:hover {
+  background: var(--ac-accent, #ea333e);
+  border-color: var(--ac-black, #0d0d0d);
+}
+
+.ac-pip-btn:active {
+  transform: translate(var(--ac-plunk, 3px), var(--ac-plunk, 3px));
+  box-shadow: none;
+}
+
+.ac-pip-btn.is-active {
+  background: var(--ac-accent, #ea333e);
+  color: var(--ac-black, #0d0d0d);
+}
+
 /* --------------------------------------------------------------- diagnostics */
 
 .ac-badge.ac-hud {
