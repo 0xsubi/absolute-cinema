@@ -608,7 +608,7 @@
       return;
     }
 
-    if (settings.pip) {
+    if (settings.pip && !document.fullscreenElement) {
       pip.mount(player, video);
     } else {
       pip.unmount();
@@ -763,4 +763,5 @@
 
   setInterval(scan, 1000);
   document.addEventListener('DOMContentLoaded', scan);
+  document.addEventListener('fullscreenchange', () => evaluate(), true);
 })();
